@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>reveal.js</title>
+
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+		<link rel="stylesheet" href="dist/theme/my-theme.css">
+
+		<!-- Theme used for syntax highlighted code -->
+		<link rel="stylesheet" href="plugin/highlight/monokai.css">
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section>
+					<section data-background-color="#F05365">
+						<h2 style="color: #F2EDEB">Overview of spectral clustering</h2>
+					</section>
+					<section>
+						<ul>
+							<li>Uses eigenvectors to embed data into a lower dimension</li>
+							<li>In graphs it solves the normalised cut problem</li>
+						</ul>
+					</section>
+				</section>
+				<section>
+					<section data-background-color="#925E78">
+						<h2 style="color: #F2EDEB">Graph Laplacian</h2>
+					</section>
+					<section>
+						<h4>Adjacency Matrix</h4>
+						<p style="font-size: 0.75em">$$
+						\mathbf{A} = \begin{bmatrix} 
+							0 & 1 & \ldots & a_{1, n} \\
+							1 & 1 & \ldots & a_{2, n} \\
+							\vdots & \vdots & \ddots & \vdots \\
+							a_{n, 1} & a_{n, 2} & \ldots & a_{n, n}
+						\end{bmatrix}
+						$$</p>
+						<p style="font-size: 0.75em">Rows and columns represent vertices in the graph</p>
+						<p style="font-size: 0.75em">So $a_{i,j} = 1$ if there is an edge between vertex $i$ and vertex $j$</p>
+
+						<p style="font-size: 0.75em">$$
+							\mathbf{A}_{i, j} = \begin{align*}\begin{cases}
+							1, \ &if \ (i, j) \in E \\
+							0, \ &if \ (i, j) \notin E
+						\end{cases}\end{align*}$$
+						</p>
+					</section>
+					<section>
+						<h4>Degree Matrix</h4>
+						<p style="font-size: 0.75em">$$
+							\mathbf{D} = \begin{bmatrix} 
+								4 & 0 & \ldots & 0 \\
+								0 & 1 & \ldots & 0 \\
+								\vdots & \vdots & \ddots & \vdots \\
+								0 & 0 & \ldots & 16
+							\end{bmatrix}
+						$$</p>
+						<p style="font-size: 0.75em">The degree is the number of edges that vertex $i$ has</p>
+
+						<p style="font-size: 0.75em">$$
+							\mathbf{D}_{i, j} = \begin{align*}\begin{cases}
+							deg(v_{i}), \ &if \ i = j \\
+							0, \ &if \ i \neq j
+						\end{cases}\end{align*}$$
+						</p>
+					</section>
+					<section>
+						<h4>Laplacian Matrix</h4>
+						<p style="font-size: 0.75em">$$
+							\mathbf{L} = \mathbf{D} - \mathbf{A} = \begin{bmatrix} 
+								4 & -1 & \ldots & -a_{1, n}\\
+								-1 & 1 & \ldots & -a_{2, n} \\
+								\vdots & \vdots & \ddots & \vdots \\
+								-a_{n, 1} & -a_{n, 2} & \ldots & 16
+							\end{bmatrix}
+						$$</p>
+					</section>
+					<section>
+						<h4>Useful properties of the graph laplacian</h4>
+						<ul>
+							<li><span>Combines the information from the degree matrix and the adjacency matrix</span></li>
+							<li><span>Rows sum to 0</span></li>
+							<li><span>Symmetric positive semi-definite</span></li>
+						</ul>
+					</section>
+					<section data-background-color="#696969">
+						<h2 style="color: #F2EDEB">Appendix</h2>
+					</section>
+					<section>
+						<h3>Rows sum to 0</h3>
+						<p>The fact that the rows sum to 0 makes it straightforward to find $\lambda_{0} = 0$</p>
+					</section>
+					<section>
+						<h3>Symmetric positive semidefinite</h3>
+						<p>The eigenvalues of $L$ are greater than or equal to zero</p>
+						<p style="font-size: 0.75em;">$$
+								0 = {\lambda_{0} \leq \lambda_{1} \leq \dots \leq \lambda_{n-1}}
+						$$</p>
+						<p>The symmetry guarantees orthoganlity in the eigenvectors</p>
+						<p>The positive semidefiniteness is required for the rayleigh quotient to be convex</p>
+					</section>
+				</section>
+				<section>
+					<section data-background-color="#BD93BD">
+						<h2 style="color: #F2EDEB">Graph Laplacian Spectrum</h2>
+					</section>
+					<section>
+						<p>The graph laplacian spectrum is the set of eigenvalues associated with a laplacian matrix</p>
+
+						<p style="font-size: 0.75em;">$$
+							\begin{align*}
+								\Lambda &= {\lambda_{0}, \lambda_{1}, \dots, \lambda_{n-1}} \\
+								X &= {\mathbf{x}_{0}, \mathbf{x}_{1}, \dots, \mathbf{x}_{n-1}} 
+							\end{align*} 
+						$$</p>
+						<p>Typically the eigenvalues are ordered from smallest to largest</p>
+						<p style="font-size: 0.75em;">$\lambda_{0} \leq \lambda_{1} \leq \dots \leq \lambda_{n-1} $</p>
+					</section>
+					<section>
+						<p>The trivial eigenvector $\lambda_{0}$</p>
+						<p style="font-size: 0.75em;">$$
+							\begin{align*}
+								L \cdot \mathbf{x} &= \mathbf{x} \cdot \lambda_{0}
+							\end{align*}
+						$$</p>
+						<p style="font-size: 0.75em;">Since the rows of $L$ sum to $0$, if we set $\mathbf{x} = \mathbf{1}$ we get</p>
+						<p style="font-size: 0.75em;">$$
+							\begin{align*}
+								\mathbf{0} &= \mathbf{1} \cdot \lambda_{0} \\
+								\lambda_{0} &= 0
+							\end{align*}
+						$$</p>
+					</section>
+					<section>
+						<h2>Rayleigh quotient</h2>
+						<p style="font-size: 0.75em;">$$
+							\begin{align*}
+								R(L, x) &= \frac{x^{T}Lx}{x^{T}x} \\
+								&= x^{T}Lx \\
+								&= \sum_{(i, j) \in E} (x_{i} - x_{j})^{2}
+							\end{align*}
+						$$</p>
+					</section>
+					<section>
+						<p>Finding $\lambda_{1}$</p>
+						<p style="font-size: 0.75em;">$$
+							\begin{align*}
+								\lambda_{1} = \min_{x \perp \mathbf{1}, ||x||=1} \sum_{(i, j) \in E} (x_{i} - x_{j})^{2}
+							\end{align*}
+						$$</p>
+					</section>
+					<section data-auto-animate>
+						<img src="rayleigh_minimisation.png" height="50%" width="50%" id="rayleigh_min_equation">
+						<p style="font-size: 0.75em;">$$
+							\begin{align*}
+								(x_{5} - x_{6})^{2} &= (-0.733 - 0.502)^{2} \\
+								&= -1.235^{2} \\
+								&= 1.525
+							\end{align*}
+						$$</p>
+					</section>
+					<section data-auto-animate>
+						<img src="rayleigh_minimisation.png" height="50%" width="50%" id="rayleigh_min_equation">
+						<p style="font-size: 0.75em;">$$
+							\begin{align*}
+								(x_{3} - x_{4})^{2} &= (-0.972 - -1.005)^{2} \\
+								&= 0.033^{2} \\
+								&= 0.001
+							\end{align*}
+						$$</p>
+					</section>
+					<section data-background-color="#696969">
+						<h2 style="color: #F2EDEB">Appendix</h2>
+					</section>
+					<section>
+						<h3>Eigenvalues can be found via rayleighs quotient</h3>
+						<p>Since the laplacian is a real valued symmetric matrix, it is a speacial case of a hermitian matrix, that is, it is equal to it's conjugate transpose.</p>
+						$$L = \overline{L^{T}}$$
+					</section>
+				</section>
+				<section>
+					<section data-background-color="#FABC2A">
+						<h2 style="color: #F2EDEB">Partitioning the graph</h2>
+					</section>
+					<section>
+						<h3>Normalised cut problem</h3>
+						<p>The normalised cut problem aims to find groups with high intra-group connectivity and a low inter-group connectivity</p>
+					</section>
+					<section>
+						<h3>Fiedler vector</h3>
+						<p>The eigenvector associated with $\lambda_{1}$ is called the fiedler vector</p>
+						<p>It can be used to partition a graph into <b>2</b> clusters</p>
+						<p style="font-size: 0.75em;" id="rayleigh_min_equation">$$
+							\begin{align*}
+								\mathbf{[}&-1.014 & -1.019 & -1.09 & -0.972 & -1.005 & -0.733 \\
+								&0.502 & 1.348 & 0.744 & 0.828 & 1.348 & 1.063\mathbf{]}
+							\end{align*}
+						$$</p>
+					</section>
+					<section>
+						<img src="fiedler_vector.png" height="50%" width="50%">
+					</section>
+				</section>
+				<section>
+					<section data-background-color="#F05365">
+						<h2 style="color: #F2EDEB">Clustering</h2>
+					</section>
+					<section>
+						<p><i>k</i>-means is a convex relaxation of the normalised cut problem</p>
+						<p style="font-size: 0.5em;">Details can be found in <a href="https://cims.nyu.edu/~sling/MATH-SHU-236-2020-SPRING/MATH-SHU-236-Lecture-15-mincut.pdf">https://cims.nyu.edu/~sling/MATH-SHU-236-2020-SPRING/MATH-SHU-236-Lecture-15-mincut.pdf</a></p>
+					</section>
+					<section>
+						<img src="graph_grouped_by_ev.png">
+					</section>
+					<section>
+						<img src="spec_clus_1_2.png" width="400px" style="padding-right: 25px">
+						<img src="spec_clus_3_4.png" width="400px" style="padding-left: 25px">
+					</section>
+				</section>
+				<section>
+					<section data-background-color="#925E78">
+						<h2 style="color: #F2EDEB">Example</h2>
+					</section>
+					<section>
+						<h3  style="padding: 0px; margin: 0px;">Facebook friends lists</h3>
+						<img src="facebook_graph.png" width="700px" style="padding: 0px; margin: 0px;">
+					</section>
+					<section>
+						<h3  style="padding: 0px; margin: 0px;">Clustered data</h3>
+						<img src="facebook_graph_spec_clus.png" width="700px" style="padding: 0px; margin: 0px;">
+					</section>
+				</section>
+			</div>
+		</div>
+
+		<script src="dist/reveal.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+		<script src="plugin/math/math.js"></script>
+		<script src="plugin/zoom/zoom.js"></script>
+		<script>
+			// More info about initialization & config:
+			// - https://revealjs.com/initialization/
+			// - https://revealjs.com/config/
+			Reveal.initialize({
+				hash: true,
+
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes, RevealMath.KaTeX, RevealZoom ]
+			});
+		</script>
+	</body>
+</html>

@@ -1,0 +1,11 @@
+@font-face {
+    font-family: 'Bitter';
+        src: url('./Bitter-VariableFont_wght.ttf') format('truetype');
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Bitter';
+        src: url('./Bitter-Italic-VariableFont_wght.ttf') format('truetype');
+    font-style: italic;
+}
