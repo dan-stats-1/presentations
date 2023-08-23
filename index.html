@@ -26,9 +26,6 @@
 							<li>In graphs it solves the normalised cut problem</li>
 						</ul>
 					</section>
-					<section>
-						<img src="dummy_graph.png">
-					</section>
 				</section>
 				<section>
 					<section data-background-color="#925E78">
@@ -48,7 +45,7 @@
 						<p style="font-size: 0.75em">So $a_{i,j} = 1$ if there is an edge between vertex $i$ and vertex $j$</p>
 
 						<p style="font-size: 0.75em">$$
-							a_{i, j} = \begin{align*}\begin{cases}
+							\mathbf{A}_{i, j} = \begin{align*}\begin{cases}
 							1, \ &if \ (i, j) \in E \\
 							0, \ &if \ (i, j) \notin E
 						\end{cases}\end{align*}$$
@@ -154,7 +151,7 @@
 						<p>Finding $\lambda_{1}$</p>
 						<p style="font-size: 0.75em;">$$
 							\begin{align*}
-								\lambda_{1} = \min_{\sum_i x_{i} \perp \mathbf{1}, ||x||=1} \sum_{(i, j) \in E} (x_{i} - x_{j})^{2}
+								\lambda_{1} = \min_{x \perp \mathbf{1}, ||x||=1} \sum_{(i, j) \in E} (x_{i} - x_{j})^{2}
 							\end{align*}
 						$$</p>
 					</section>
